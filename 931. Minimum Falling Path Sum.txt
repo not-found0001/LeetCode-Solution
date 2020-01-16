@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<int>>dp, visit;
+    
+    int solve(vector<vector<int>>& A, int i, int j)
+    {
+        if(i == A.size()) return 0;
+        if(j == -1 or j == A[0].size()) return 1e7;
+        if(visit[i][j]) return dp[i][j];
+        visit[i][j] = 1;
+        int ans = 1e7;
+        ans = min(ans, A[i][j] + solve(A, i+1, j-1));
+        ans = min(ans, A[i][j] + solve(A, i+1, j));
+        ans = min(ans, A[i][j] + solve(A, i+1, j+1));
+        return dp[i][j] = ans;
+    }
+    
+    int minFallingPathSum(vector<vector<int>>& A) 
+    {
+        int r = A.size();
+        int c = A[0].size();
+        dp = vector<vector<int>>(r+5, (vector<int>(c+5, -1)));
+        visit.resize(r+5, vector<int>(c+5, 0));
+        int Ans = 1e7;
+        for(int i=0 ; i<c ; i++) Ans = min(Ans, solve(A, 0, i));
+        return Ans;
+    }
+};

@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>>dp;
+    int package[3] = {1, 7, 30};
+    
+    int solve(vector<int>& days, vector<int>& costs, int i, int j)
+    {
+        if(i == days.size()) return 0;
+        int &ret = dp[i][j];
+        if(ret != -1) return ret;
+        ret = 1e7;
+        for(int k=0 ; k<3 ; k++){
+            if(days[i] < j) ret = min(ret, solve(days, costs, i+1, j));
+            else ret = min(ret, costs[k] + solve(days, costs, i+1, days[i]+package[k]));
+        }
+        return ret;
+    }
+    
+    int mincostTickets(vector<int>& days, vector<int>& costs) 
+    {
+        int day = days.size();
+        dp.resize(day, vector<int>(400, -1));
+        int Ans = solve(days, costs, 0, 0);
+        return Ans;
+    }
+};

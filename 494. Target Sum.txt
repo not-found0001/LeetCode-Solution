@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>>dp;
+    
+    int solve(vector<int>& nums, int pos, int sum, int tot)
+    {
+        if(pos == nums.size() and tot == sum) return 1;
+        if(pos == nums.size() and tot != sum) return 0;
+        int &ret = dp[pos][sum+1000];
+        if(ret != -1) return ret;
+        ret = solve(nums, pos+1, sum-nums[pos], tot) +
+              solve(nums, pos+1, sum+nums[pos], tot);
+        return ret;
+    }
+    
+    int findTargetSumWays(vector<int>& nums, int S) {
+        int sz = nums.size();
+        dp.resize(sz+5, vector<int>(2005,-1));
+        int Ans = solve(nums, 0, 0, S);
+        return Ans;
+    }
+};
